@@ -2,8 +2,32 @@ package org.example.board_query.api.model;
 
 import lombok.Builder;
 import lombok.Getter;
+import org.springframework.data.domain.Page;
+
+import java.util.List;
 
 public class BoardDto {
+    @Getter
+    @Builder
+    public static class PageRes {
+        private List<ListRes> boardList;
+        private int totalPage;
+        private long totalCount;
+        private int currentPage;
+        private int currentSize;
+
+        public static PageRes from(Page<Board> result) {
+            return PageRes.builder()
+                    .boardList(result.get().map(BoardDto.ListRes::from).toList())
+                    .totalPage(result.getTotalPages())
+                    .totalCount(result.getTotalElements())
+                    .currentPage(result.getPageable().getPageNumber())
+                    .currentSize(result.getPageable().getPageSize())
+                    .build();
+        }
+    }
+
+
     @Builder
     @Getter
     public static class ListRes {
@@ -11,15 +35,13 @@ public class BoardDto {
         private String title;
         private String writer;
         private int replyCount;
-        private int likeslist;
+        private int likesCount;
 
         public static ListRes from(Board entity) {
             return ListRes.builder()
                     .idx(entity.getIdx())
                     .title(entity.getTitle())
-                    .writer(entity.getUser().getName())
-                    .likeslist(entity.getLikesList().size())
-                    .replyCount(entity.getReply().size())
+                    .writer(entity.getUserName())
                     .build();
         }
     }
@@ -29,15 +51,15 @@ public class BoardDto {
     public static class ReadRes {
         private Long idx;
         private String title;
-        private String content;
+        private String contents;
         private String writer;
-        private int likeslist;
+        private int likesCount;
 
         public static ReadRes from(Board entity) {
             return ReadRes.builder()
                     .idx(entity.getIdx())
                     .title(entity.getTitle())
-                    .content(entity.getContents())
+                    .contents(entity.getContents())
                     .writer(entity.getUserName())
                     .build();
         }

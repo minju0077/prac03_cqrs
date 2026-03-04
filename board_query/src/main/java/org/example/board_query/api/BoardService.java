@@ -1,41 +1,29 @@
 package org.example.board_query.api;
 
 import lombok.RequiredArgsConstructor;
+import org.example.board_query.api.model.Board;
+import org.example.board_query.api.model.BoardDto;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @RequiredArgsConstructor
 @Service
 public class BoardService {
     private final BoardRepository boardRepository;
 
-    public BoardDto.RegRes register(BoardDto.RegReq dto) {
-        Board entity = boardRepository.save(dto.toEntity());
+    public BoardDto.PageRes list(int page, int size) {
+        PageRequest pageRequest = PageRequest.of(page, size);
 
-        return BoardDto.RegRes.from(entity);
-    }
+        // 페이징 처리 ⭕, 페이지 번호가 필요하다 => Page 반환
+        // 페이징 처리 ⭕, 페이지 번호가 필요없다. => Slice 반환
+        Page<Board> result = boardRepository.findAll(pageRequest);
 
-    public List<BoardDto.ListRes> list() {
-        List<Board> boardList = boardRepository.findAll();
-        return boardList.stream().map(BoardDto.ListRes::from).toList();
+        return BoardDto.PageRes.from(result);
     }
 
     public BoardDto.ReadRes read(Long idx) {
         Board board = boardRepository.findById(idx).orElseThrow();
         return BoardDto.ReadRes.from(board);
-    }
-
-    public BoardDto.RegRes update(Long idx, BoardDto.RegReq dto) {
-        Board board = boardRepository.findById(idx).orElseThrow();
-        board.update(dto);
-
-        boardRepository.save(board);
-
-        return BoardDto.RegRes.from(board);
-    }
-
-    public void delete(Long idx) {
-        boardRepository.deleteById(idx);
     }
 }

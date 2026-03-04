@@ -3,7 +3,7 @@ server:
 
 spring:
   application:
-    name: board_command
+    name: board_query
   datasource:
     driver-class-name: org.mariadb.jdbc.Driver
     url: ${DB_URL}

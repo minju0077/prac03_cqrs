@@ -1,28 +1,25 @@
 package org.example.board_query.api;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.example.board_core.common.model.BaseResponse;
+import org.example.board_query.api.model.BoardDto;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @CrossOrigin(origins = "http://localhost:5173",allowCredentials = "true")
 @RequestMapping("/board")
 @RestController
 @RequiredArgsConstructor
+@Tag(name="게시판 기능")
 public class BoardController {
     private final BoardService boardService;
 
-    @PostMapping("/reg")
-    public ResponseEntity register(@RequestBody BoardDto.RegReq dto) {
-        BoardDto.RegRes result = boardService.register(dto);
-        return ResponseEntity.ok(BaseResponse.success(result));
-    }
-
-
     @GetMapping("/list")
-    public ResponseEntity list() {
-        List<BoardDto.ListRes> dto = boardService.list();
+    public ResponseEntity list(
+            @RequestParam(required = true, defaultValue = "0") int page,
+            @RequestParam(required = true, defaultValue = "5") int size) {
+        BoardDto.PageRes dto = boardService.list(page, size);
         return ResponseEntity.ok(BaseResponse.success(dto));
     }
 
@@ -32,16 +29,4 @@ public class BoardController {
         return ResponseEntity.ok(BaseResponse.success(dto));
     }
 
-    @PutMapping("/update/{idx}")
-    public ResponseEntity update(@PathVariable Long idx, @RequestBody BoardDto.RegReq dto) {
-        BoardDto.RegRes result = boardService.update(idx, dto);
-        return ResponseEntity.ok(BaseResponse.success(result));
-    }
-
-    @DeleteMapping("/delete/{idx}")
-    public ResponseEntity update(@PathVariable Long idx) {
-        boardService.delete(idx);
-        return ResponseEntity.ok(BaseResponse.success("성공"));
-    }
 }
-
