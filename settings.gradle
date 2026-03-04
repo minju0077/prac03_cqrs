@@ -2,3 +2,4 @@ rootProject.name = 'board'
 
 include 'board_command'
 include 'board_query'
+include 'board_core'
