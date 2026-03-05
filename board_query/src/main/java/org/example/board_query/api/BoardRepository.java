@@ -1,6 +1,5 @@
 package org.example.board_query.api;
 
-
 import org.example.board_query.api.model.Board;
 import org.springframework.data.jpa.repository.JpaRepository;
 

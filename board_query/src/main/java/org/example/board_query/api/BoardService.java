@@ -1,8 +1,8 @@
 package org.example.board_query.api;
 
+import lombok.RequiredArgsConstructor;
 import org.example.board_query.api.model.Board;
 import org.example.board_query.api.model.BoardDto;
-import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
