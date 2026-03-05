@@ -1,5 +1,7 @@
 package org.example.board_query.api.model;
 
+
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
 import lombok.Getter;
 import org.springframework.data.domain.Page;

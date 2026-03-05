@@ -13,6 +13,9 @@ public class BoardService {
     public BoardDto.RegRes register(Long userIdx, String userName, BoardDto.RegReq dto) {
 
         Board entity = boardRepository.save(dto.toEntity(userIdx, userName));
+
+        // 카프카에 게시글이 생성됐다는 메시지(게시글 내용)를 전송
+
         return BoardDto.RegRes.from(entity);
     }
 
